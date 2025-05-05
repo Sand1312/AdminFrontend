@@ -86,6 +86,12 @@ export default [
     ],
   },
   {
+    path: '/train',
+    name: 'train',
+    icon: 'smile',
+    component: './train',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
