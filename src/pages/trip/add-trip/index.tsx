@@ -2,9 +2,11 @@ import type { FC } from 'react';
 import { useState, useEffect } from 'react';
 import { Button, DatePicker, Form, InputNumber, AutoComplete, message } from 'antd';
 import moment from 'moment';
-import { addTrip } from '@/services/my-api/tripApi';
-import { getAllTrain } from '@/services/my-api/trainApi';
-import { TripApi } from '@/pages/trip/add-trip/data';
+import { addTrip } from  '@/services/my-api/tripApi';
+import { getAllTrain } from '@/services/my-api/trainApi';  
+// import { TripApi } from '@/pages/trip/add-trip/data';
+import { TrainResponse } from '@/pages/trip/add-trip/data';
+import {AddTripRequest} from '@/pages/trip/add-trip/data'
 
 interface TripForm {
   trainId: string | null;
@@ -17,7 +19,7 @@ interface TripForm {
 
 const AddTrip: FC = () => {
   const [form] = Form.useForm();
-  const [trains, setTrains] = useState<TripApi.trainResponse[]>([]);
+  const [trains, setTrains] = useState<TrainResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState<{ value: string; label: string }[]>([]);
 
@@ -104,7 +106,7 @@ const AddTrip: FC = () => {
         return;
       }
 
-      const payload: TripApi.addTripRequest = {
+      const payload: AddTripRequest = {
         trainId: values.trainId || '',
         basePrice: values.basePrice,
         tripDate: values.tripDate ? values.tripDate.format('YYYY-MM-DD') : '',
