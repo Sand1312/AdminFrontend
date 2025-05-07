@@ -16,7 +16,7 @@ const rankingListData: {
 
 for (let i = 0; i < 7; i += 1) {
   rankingListData.push({
-    title: `工专路 ${i} 号店`,
+    title: `Store No. ${i} `,
     total: 323234,
   });
 }
@@ -51,16 +51,16 @@ const SalesCard = ({
             <div className={styles.salesExtraWrap}>
               <div className={styles.salesExtra}>
                 <a className={isActive('today')} onClick={() => selectDate('today')}>
-                  今日
+                  Today
                 </a>
                 <a className={isActive('week')} onClick={() => selectDate('week')}>
-                  本周
+                  Week
                 </a>
                 <a className={isActive('month')} onClick={() => selectDate('month')}>
-                  本月
+                  Month
                 </a>
                 <a className={isActive('year')} onClick={() => selectDate('year')}>
-                  本年
+                  Year
                 </a>
               </div>
               <RangePicker
@@ -79,7 +79,7 @@ const SalesCard = ({
           items={[
             {
               key: 'sales',
-              label: '销售额',
+              label: 'Sales',
               children: (
                 <Row>
                   <Col xl={16} lg={12} md={12} sm={24} xs={24}>
@@ -112,7 +112,7 @@ const SalesCard = ({
                   </Col>
                   <Col xl={8} lg={12} md={12} sm={24} xs={24}>
                     <div className={styles.salesRank}>
-                      <h4 className={styles.rankingTitle}>门店销售额排名</h4>
+                      <h4 className={styles.rankingTitle}>Ranking Sales</h4>
                       <ul className={styles.rankingList}>
                         {rankingListData.map((item, i) => (
                           <li key={item.title}>
@@ -137,7 +137,7 @@ const SalesCard = ({
             },
             {
               key: 'views',
-              label: '访问量',
+              label: 'Views',
               children: (
                 <Row>
                   <Col xl={16} lg={12} md={12} sm={24} xs={24}>

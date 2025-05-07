@@ -16,32 +16,18 @@ export default [
     layout: false,
     routes: [
       {
-        name: 'login',
         path: '/user/login',
-        component: './User/Login',
-      },
-    ],
-  },
-  {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
-  },
-  {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    access: 'canAdmin',
-    routes: [
-      {
-        path: '/admin',
-        redirect: '/admin/sub-page',
+        layout: false,
+        name: 'login',
+        component: './user/login',
       },
       {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        component: './Admin',
+        path: '/user',
+        redirect: '/user/login',
+      },
+      {
+        component: '404',
+        path: '/user/*',
       },
     ],
   },
@@ -92,12 +78,80 @@ export default [
     component: './train',
   },
   {
-    path: '/',
-    redirect: '/welcome',
+    name: 'result',
+    icon: 'CheckCircleOutlined',
+    path: '/result',
+    routes: [
+      {
+        path: '/result',
+        redirect: '/result/success',
+      },
+      {
+        name: 'success',
+        icon: 'smile',
+        path: '/result/success',
+        component: './result/success',
+      },
+      {
+        name: 'fail',
+        icon: 'smile',
+        path: '/result/fail',
+        component: './result/fail',
+      },
+    ],
   },
   {
-    path: '*',
-    layout: false,
-    component: './404',
+    path: '/admin',
+    name: 'admin',
+    icon: 'crown',
+    access: 'canAdmin',
+    routes: [
+      {
+        path: '/admin',
+        redirect: '/admin/sub-page',
+      },
+      {
+        path: '/admin/sub-page',
+        name: 'sub-page',
+        component: './Admin',
+      },
+    ],
+  },
+  {
+    name: 'exception',
+    icon: 'warning',
+    path: '/exception',
+    routes: [
+      {
+        path: '/exception',
+        redirect: '/exception/403',
+      },
+      {
+        name: '403',
+        icon: 'smile',
+        path: '/exception/403',
+        component: './exception/403',
+      },
+      {
+        name: '404',
+        icon: 'smile',
+        path: '/exception/404',
+        component: './exception/404',
+      },
+      {
+        name: '500',
+        icon: 'smile',
+        path: '/exception/500',
+        component: './exception/500',
+      },
+    ],
+  },
+  {
+    path: '/',
+    redirect: '/dashboard/analysis',
+  },
+  {
+    component: '404',
+    path: '/*',
   },
 ];

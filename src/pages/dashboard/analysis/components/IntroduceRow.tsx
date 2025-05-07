@@ -24,15 +24,15 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Dat
       <Col {...topColResponsiveProps}>
         <ChartCard
           bordered={false}
-          title="总销售额"
+          title="Total Sales"
           action={
-            <Tooltip title="指标说明">
+            <Tooltip title="Metric Description">
               <InfoCircleOutlined />
             </Tooltip>
           }
           loading={loading}
           total={() => <Yuan>126560</Yuan>}
-          footer={<Field label="日销售额" value={`￥${numeral(12423).format('0,0')}`} />}
+          footer={<Field label="Daily Sales" value={`￥${numeral(12423).format('0,0')}`} />}
           contentHeight={46}
         >
           <Trend
@@ -41,11 +41,11 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Dat
               marginRight: 16,
             }}
           >
-            周同比
+            WoW change
             <span className={styles.trendText}>12%</span>
           </Trend>
           <Trend flag="down">
-            日同比
+            DoD Change
             <span className={styles.trendText}>11%</span>
           </Trend>
         </ChartCard>
@@ -55,14 +55,14 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Dat
         <ChartCard
           bordered={false}
           loading={loading}
-          title="访问量"
+          title="Traffic"
           action={
-            <Tooltip title="指标说明">
+            <Tooltip title="Metric Explanation">
               <InfoCircleOutlined />
             </Tooltip>
           }
           total={numeral(8846).format('0,0')}
-          footer={<Field label="日访问量" value={numeral(1234).format('0,0')} />}
+          footer={<Field label="daily traffic" value={numeral(1234).format('0,0')} />}
           contentHeight={46}
         >
           <Area
@@ -85,14 +85,14 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Dat
         <ChartCard
           bordered={false}
           loading={loading}
-          title="支付笔数"
+          title="Number of transactions"
           action={
-            <Tooltip title="指标说明">
+            <Tooltip title="Metric Explanation">
               <InfoCircleOutlined />
             </Tooltip>
           }
           total={numeral(6560).format('0,0')}
-          footer={<Field label="转化率" value="60%" />}
+          footer={<Field label="Conversion rate" value="60%" />}
           contentHeight={46}
         >
           <Column
@@ -110,9 +110,9 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Dat
         <ChartCard
           loading={loading}
           bordered={false}
-          title="运营活动效果"
+          title="Campaign Effectiveness"
           action={
-            <Tooltip title="指标说明">
+            <Tooltip title="Metric Explanation">
               <InfoCircleOutlined />
             </Tooltip>
           }
@@ -130,11 +130,11 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Dat
                   marginRight: 16,
                 }}
               >
-                周同比
+                WoW change
                 <span className={styles.trendText}>12%</span>
               </Trend>
               <Trend flag="down">
-                日同比
+                DoD change
                 <span className={styles.trendText}>11%</span>
               </Trend>
             </div>
