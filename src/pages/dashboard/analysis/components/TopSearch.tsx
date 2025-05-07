@@ -22,18 +22,18 @@ const TopSearch = ({
   const { styles } = useStyles();
   const columns = [
     {
-      title: '排名',
+      title: 'Index',
       dataIndex: 'index',
       key: 'index',
     },
     {
-      title: '搜索关键词',
+      title: 'Keyword',
       dataIndex: 'keyword',
       key: 'keyword',
       render: (text: React.ReactNode) => <a href="/">{text}</a>,
     },
     {
-      title: '用户数',
+      title: 'Count',
       dataIndex: 'count',
       key: 'count',
       sorter: (
@@ -46,7 +46,7 @@ const TopSearch = ({
       ) => a.count - b.count,
     },
     {
-      title: '周涨幅',
+      title: 'Range',
       dataIndex: 'range',
       key: 'range',
       sorter: (

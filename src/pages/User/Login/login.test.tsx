@@ -1,6 +1,6 @@
 ﻿import { TestBrowser } from '@@/testBrowser';
-import { fireEvent, render } from '@testing-library/react';
-import React, { act } from 'react';
+import { act, fireEvent, render } from '@testing-library/react';
+import React from 'react';
 
 // @ts-ignore
 import { startMock } from '@@/requestRecordMock';
