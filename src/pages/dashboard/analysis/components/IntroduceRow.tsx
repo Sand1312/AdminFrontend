@@ -1,24 +1,60 @@
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { Area, Column } from '@ant-design/plots';
 import { Col, Progress, Row, Tooltip } from 'antd';
+import dayjs from 'dayjs';
 import numeral from 'numeral';
 import type { DataItem } from '../data.d';
 import useStyles from '../style.style';
-import Yuan from '../utils/Yuan';
+import Dong from '../utils/Dong';
 import { ChartCard, Field } from './Charts';
+import { useRequest } from '@umijs/max';
 import Trend from './Trend';
+import { useEffect } from 'react';
+import { getTotalRevenue, getSalesFromTo } from '../service';
 const topColResponsiveProps = {
-  xs: 24,
-  sm: 12,
-  md: 12,
-  lg: 12,
-  xl: 6,
+  xs: 48,
+  sm: 24,
+  md: 24,
+  lg: 24,
+  xl: 12,
   style: {
     marginBottom: 24,
   },
 };
-const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: DataItem[] }) => {
+const getTimeProgress = () => {
+  const now = dayjs();
+
+  const secondsToday = now.diff(now.startOf('day'), 'second');
+  const percentDay = (secondsToday / 86400) * 100;
+
+  const dayOfWeek = now.day();
+  const percentWeek = ((dayOfWeek * 86400 + secondsToday) / (7 * 86400)) * 100;
+
+  const daysInMonth = now.daysInMonth();
+  const dayOfMonth = now.date() - 1;
+  const percentMonth = ((dayOfMonth * 86400 + secondsToday) / (daysInMonth * 86400)) * 100;
+
+  return [
+    { label: 'Day', value: percentDay },
+    { label: 'Week', value: percentWeek },
+    { label: 'Month', value: percentMonth },
+  ];
+};
+
+const IntroduceRow = () => {
+  const { data: totalRevenue, loading } = useRequest(getTotalRevenue);
+  const now = dayjs().format('YYYY-MM-DD');
+  const { data: dailySales } = useRequest(() =>
+    getSalesFromTo({ startDate: now, endDate: now, type: 'daily' }),
+  );
+  const totalAmounts: number[] = (dailySales || []).map((item) => item.totalAmount);
+  // console.log('total revenue', data);
+  // useEffect(() => {
+  //   getTotalRevenue().then((res) => {
+  //     console.log('Raw response:', res);
+  //   });
+  // }, []);
   const { styles } = useStyles();
+  const timeData = getTimeProgress();
   return (
     <Row gutter={24}>
       <Col {...topColResponsiveProps}>
@@ -31,8 +67,11 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Dat
             </Tooltip>
           }
           loading={loading}
-          total={() => <Yuan>126560</Yuan>}
-          footer={<Field label="Daily Sales" value={`￥${numeral(12423).format('0,0')}`} />}
+          total={() => <Dong>{totalRevenue ?? 0}</Dong>}
+          // footer={<Field label="Daily Sales" value={`${numeral(12423).format('0,0')} đ`} />}
+          footer={
+            <Field label="Daily Sales" value={`${numeral({ totalAmounts }).format('0,0')} đ`} />
+          }
           contentHeight={46}
         >
           <Trend
@@ -51,7 +90,7 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Dat
         </ChartCard>
       </Col>
 
-      <Col {...topColResponsiveProps}>
+      {/* <Col {...topColResponsiveProps}>
         <ChartCard
           bordered={false}
           loading={loading}
@@ -80,8 +119,8 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Dat
             data={visitData}
           />
         </ChartCard>
-      </Col>
-      <Col {...topColResponsiveProps}>
+      </Col> */}
+      {/* <Col {...topColResponsiveProps}>
         <ChartCard
           bordered={false}
           loading={loading}
@@ -105,43 +144,55 @@ const IntroduceRow = ({ loading, visitData }: { loading: boolean; visitData: Dat
             scale={{ x: { paddingInner: 0.4 } }}
           />
         </ChartCard>
-      </Col>
+      </Col> */}
       <Col {...topColResponsiveProps}>
         <ChartCard
           loading={loading}
           bordered={false}
-          title="Campaign Effectiveness"
-          action={
-            <Tooltip title="Metric Explanation">
-              <InfoCircleOutlined />
-            </Tooltip>
-          }
-          total="78%"
-          footer={
-            <div
-              style={{
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-              }}
-            >
-              <Trend
-                flag="up"
-                style={{
-                  marginRight: 16,
-                }}
-              >
-                WoW change
-                <span className={styles.trendText}>12%</span>
-              </Trend>
-              <Trend flag="down">
-                DoD change
-                <span className={styles.trendText}>11%</span>
-              </Trend>
-            </div>
-          }
-          contentHeight={46}
+          title="⏱"
+          // action={
+          //   <Tooltip title="Metric Explanation">
+          //     <InfoCircleOutlined />
+          //   </Tooltip>
+          // }
+          total=""
+          footer={<Field label="Real Time" value="We bare bear" />}
+          // footer={
+          //   <div
+          //     style={{
+          //       whiteSpace: 'nowrap',
+          //       overflow: 'hidden',
+          //     }}
+          //   ></div>
+          // }
+          contentHeight={timeData.length * 30}
         >
-          <Progress percent={78} strokeColor={{ from: '#108ee9', to: '#87d068' }} status="active" />
+          <>
+            {timeData.map((item) => (
+              <Row key={item.label} align="middle" style={{ marginBottom: 8 }}>
+                <Col flex="auto">
+                  <Progress
+                    percent={parseFloat(item.value.toFixed(2))}
+                    strokeColor={{ from: '#108ee9', to: '#87d068' }}
+                    status="active"
+                    showInfo={false}
+                  />
+                </Col>
+                <Col flex="none" style={{ marginLeft: 12, minWidth: 80 }}>
+                  {`${item.label} ${item.value.toFixed(0)}%`}
+                </Col>
+              </Row>
+            ))}
+          </>
+          {/* <Bar
+            xField="value"
+            yField="label"
+            // shapeField="smooth"
+            height={120}
+            maxBarWidth={24}
+            axis={false}
+            data={data}
+          /> */}
         </ChartCard>
       </Col>
     </Row>
