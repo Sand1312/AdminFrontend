@@ -5,21 +5,18 @@ import type dayjs from 'dayjs';
 import numeral from 'numeral';
 import type { DataItem } from '../data.d';
 import useStyles from '../style.style';
+import { useRequest } from '@umijs/max';
 
+import { getRoutesRanking } from '../service';
 export type TimeType = 'today' | 'week' | 'month' | 'year';
 const { RangePicker } = DatePicker;
 
-const rankingListData: {
-  title: string;
-  total: number;
-}[] = [];
-
-for (let i = 0; i < 7; i += 1) {
-  rankingListData.push({
-    title: `Store No. ${i} `,
-    total: 323234,
-  });
-}
+// for (let i = 0; i < 7; i += 1) {
+//   rankingListData.push({
+//     title: `Store No. ${i} `,
+//     total: 323234,
+//   });
+// }
 
 const SalesCard = ({
   rangePickerValue,
@@ -37,6 +34,34 @@ const SalesCard = ({
   selectDate: (key: TimeType) => void;
 }) => {
   const { styles } = useStyles();
+  const rankingListData: {
+    title: string;
+    total: number;
+  }[] = [];
+  const { data: RankingRoutes, loading: RankingLoading } = useRequest(getRoutesRanking);
+  // console.log('data: ', RankingRoutes);
+
+  // const { data: salesData, loading: salesLoading } = useRequest(
+  //   () =>
+  //     getSalesFromTo({
+  //       startDate: rangePickerValue[0].format('YYYY-MM-DD'),
+  //       endDate: rangePickerValue[1].format('YYYY-MM-DD'),
+  //       type: 'raw',
+  //     }),
+  //   {
+  //     refreshDeps: [rangePickerValue],
+  //   },
+  // );
+  // console.log('Sale Data', salesData);
+  if (RankingRoutes && !RankingLoading) {
+    RankingRoutes.slice(0, 7).forEach((route) => {
+      rankingListData.push({
+        title: `${route.departureStation} → ${route.arrivalStation}`,
+        total: route.ticketCount,
+      });
+    });
+  }
+  // console.log('list of ranking', rankingListData);
   return (
     <Card
       loading={loading}
@@ -87,8 +112,8 @@ const SalesCard = ({
                       <Column
                         height={300}
                         data={salesData}
-                        xField="x"
-                        yField="y"
+                        xField="Days"
+                        yField="Tickets"
                         paddingBottom={12}
                         axis={{
                           x: {
@@ -104,7 +129,7 @@ const SalesCard = ({
                           x: { paddingInner: 0.4 },
                         }}
                         tooltip={{
-                          name: '销售量',
+                          name: 'Tickets Count',
                           channel: 'y',
                         }}
                       />
@@ -112,7 +137,7 @@ const SalesCard = ({
                   </Col>
                   <Col xl={8} lg={12} md={12} sm={24} xs={24}>
                     <div className={styles.salesRank}>
-                      <h4 className={styles.rankingTitle}>Ranking Sales</h4>
+                      <h4 className={styles.rankingTitle}>Ranking Routes</h4>
                       <ul className={styles.rankingList}>
                         {rankingListData.map((item, i) => (
                           <li key={item.title}>
@@ -126,7 +151,8 @@ const SalesCard = ({
                             <span className={styles.rankingItemTitle} title={item.title}>
                               {item.title}
                             </span>
-                            <span>{numeral(item.total).format('0,0')}</span>
+                            {/* <span>{numeral(item.total).format('0,0')}</span> */}
+                            <span>{item.total}</span>
                           </li>
                         ))}
                       </ul>
@@ -135,62 +161,62 @@ const SalesCard = ({
                 </Row>
               ),
             },
-            {
-              key: 'views',
-              label: 'Views',
-              children: (
-                <Row>
-                  <Col xl={16} lg={12} md={12} sm={24} xs={24}>
-                    <div className={styles.salesBar}>
-                      <Column
-                        height={300}
-                        data={salesData}
-                        xField="x"
-                        yField="y"
-                        paddingBottom={12}
-                        axis={{
-                          x: {
-                            title: false,
-                          },
-                          y: {
-                            title: false,
-                          },
-                        }}
-                        scale={{
-                          x: { paddingInner: 0.4 },
-                        }}
-                        tooltip={{
-                          name: '访问量',
-                          channel: 'y',
-                        }}
-                      />
-                    </div>
-                  </Col>
-                  <Col xl={8} lg={12} md={12} sm={24} xs={24}>
-                    <div className={styles.salesRank}>
-                      <h4 className={styles.rankingTitle}>门店访问量排名</h4>
-                      <ul className={styles.rankingList}>
-                        {rankingListData.map((item, i) => (
-                          <li key={item.title}>
-                            <span
-                              className={`${
-                                i < 3 ? styles.rankingItemNumberActive : styles.rankingItemNumber
-                              }`}
-                            >
-                              {i + 1}
-                            </span>
-                            <span className={styles.rankingItemTitle} title={item.title}>
-                              {item.title}
-                            </span>
-                            <span>{numeral(item.total).format('0,0')}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </Col>
-                </Row>
-              ),
-            },
+            // {
+            //   key: 'views',
+            //   label: 'Views',
+            //   children: (
+            //     <Row>
+            //       <Col xl={16} lg={12} md={12} sm={24} xs={24}>
+            //         <div className={styles.salesBar}>
+            //           <Column
+            //             height={300}
+            //             data={salesData}
+            //             xField="x"
+            //             yField="y"
+            //             paddingBottom={12}
+            //             axis={{
+            //               x: {
+            //                 title: false,
+            //               },
+            //               y: {
+            //                 title: false,
+            //               },
+            //             }}
+            //             scale={{
+            //               x: { paddingInner: 0.4 },
+            //             }}
+            //             tooltip={{
+            //               name: '访问量',
+            //               channel: 'y',
+            //             }}
+            //           />
+            //         </div>
+            //       </Col>
+            //       <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+            //         <div className={styles.salesRank}>
+            //           <h4 className={styles.rankingTitle}>门店访问量排名</h4>
+            //           <ul className={styles.rankingList}>
+            //             {rankingListData.map((item, i) => (
+            //               <li key={item.title}>
+            //                 <span
+            //                   className={`${
+            //                     i < 3 ? styles.rankingItemNumberActive : styles.rankingItemNumber
+            //                   }`}
+            //                 >
+            //                   {i + 1}
+            //                 </span>
+            //                 <span className={styles.rankingItemTitle} title={item.title}>
+            //                   {item.title}
+            //                 </span>
+            //                 <span>{numeral(item.total).format('0,0')}</span>
+            //               </li>
+            //             ))}
+            //           </ul>
+            //         </div>
+            //       </Col>
+            //     </Row>
+            //   ),
+            // },
           ]}
         />
       </div>

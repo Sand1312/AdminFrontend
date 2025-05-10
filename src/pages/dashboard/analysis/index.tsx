@@ -15,23 +15,43 @@ import type { TimeType } from './components/SalesCard';
 import SalesCard from './components/SalesCard';
 import TopSearch from './components/TopSearch';
 import type { AnalysisData } from './data.d';
-import { fakeChartData } from './service';
+import { fakeChartData, getTicketsCountByType } from './service';
 import useStyles from './style.style';
 import { getTimeDistance } from './utils/utils';
+import { getSalesFromTo } from './service';
 type RangePickerValue = RangePickerProps<dayjs.Dayjs>['value'];
 type AnalysisProps = {
   dashboardAndanalysis: AnalysisData;
   loading: boolean;
 };
-type SalesType = 'all' | 'online' | 'stores';
+// type SalesType = 'all' | 'online' | 'stores';
 const Analysis: FC<AnalysisProps> = () => {
   const { styles } = useStyles();
-  const [salesType, setSalesType] = useState<SalesType>('all');
+  // const [salesType, setSalesType] = useState<SalesType>('all');
   const [currentTabKey, setCurrentTabKey] = useState<string>('');
   const [rangePickerValue, setRangePickerValue] = useState<RangePickerValue>(
     getTimeDistance('year'),
   );
   const { loading, data } = useRequest(fakeChartData);
+  const { data: salesData, loading: salesLoading } = useRequest(
+    () =>
+      getSalesFromTo({
+        startDate: rangePickerValue[0].format('YYYY-MM-DD'),
+        endDate: rangePickerValue[1].format('YYYY-MM-DD'),
+        type: 'daily',
+      }),
+    {
+      refreshDeps: [rangePickerValue],
+    },
+  );
+  const { data: ticketData, loading: ticketLoading } = useRequest(getTicketsCountByType);
+  const ticketPieData = (ticketData || []).map((item) => ({
+    x: item.ticketTypeName,
+    y: item.ticketCount,
+  }));
+  // console.log('pie data', ticketPieData);
+  // console.log('start date: ', rangePickerValue[0].format('YYYY-MM-DD'));
+  console.log('end date: ', rangePickerValue[1].format('YYYY-MM-DD'));
   const selectDate = (type: TimeType) => {
     setRangePickerValue(getTimeDistance(type));
   };
@@ -58,13 +78,13 @@ const Analysis: FC<AnalysisProps> = () => {
     return '';
   };
 
-  let salesPieData;
+  // let salesPieData;
 
-  if (salesType === 'all') {
-    salesPieData = data?.salesTypeData;
-  } else {
-    salesPieData = salesType === 'online' ? data?.salesTypeDataOnline : data?.salesTypeDataOffline;
-  }
+  // if (salesType === 'all') {
+  //   salesPieData = data?.salesTypeData;
+  // } else {
+  //   salesPieData = salesType === 'online' ? data?.salesTypeDataOnline : data?.salesTypeDataOffline;
+  // }
 
   const dropdownGroup = (
     <span className={styles.iconGroup}>
@@ -87,9 +107,9 @@ const Analysis: FC<AnalysisProps> = () => {
       </Dropdown>
     </span>
   );
-  const handleChangeSalesType = (e: RadioChangeEvent) => {
-    setSalesType(e.target.value);
-  };
+  // const handleChangeSalesType = (e: RadioChangeEvent) => {
+  //   setSalesType(e.target.value);
+  // };
   const handleTabChange = (key: string) => {
     setCurrentTabKey(key);
   };
@@ -98,16 +118,18 @@ const Analysis: FC<AnalysisProps> = () => {
     <GridContent>
       <>
         <Suspense fallback={<PageLoading />}>
-          <IntroduceRow loading={loading} visitData={data?.visitData || []} />
+          {/* <IntroduceRow loading={loading} visitData={data?.visitData || []} /> */}
+          <IntroduceRow />
         </Suspense>
 
         <Suspense fallback={null}>
           <SalesCard
             rangePickerValue={rangePickerValue}
-            salesData={data?.salesData || []}
+            // salesData={data?.salesData || []}
+            salesData={salesData || []}
             isActive={isActive}
             handleRangePickerChange={handleRangePickerChange}
-            loading={loading}
+            loading={salesLoading}
             selectDate={selectDate}
           />
         </Suspense>
@@ -132,10 +154,12 @@ const Analysis: FC<AnalysisProps> = () => {
             <Suspense fallback={null}>
               <ProportionSales
                 dropdownGroup={dropdownGroup}
-                salesType={salesType}
-                loading={loading}
-                salesPieData={salesPieData || []}
-                handleChangeSalesType={handleChangeSalesType}
+                // salesType={salesType}
+                // loading={loading}
+                loading={ticketLoading}
+                // salesPieData={salesPieData || []}
+                salesPieData={ticketPieData || []}
+                // handleChangeSalesType={handleChangeSalesType}
               />
             </Suspense>
           </Col>
