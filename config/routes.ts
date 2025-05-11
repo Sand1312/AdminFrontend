@@ -78,6 +78,12 @@ export default [
     component: './train',
   },
   {
+    path: '/trainschedule',
+    name: 'train-schedule',
+    icon: 'smile',
+    component: './trainschedule',
+  },
+  {
     name: 'result',
     icon: 'CheckCircleOutlined',
     path: '/result',
