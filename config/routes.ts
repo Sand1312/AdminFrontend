@@ -79,9 +79,15 @@ export default [
   },
   {
     path: '/trainschedule',
-    name: 'train-schedule',
-    icon: 'smile',
+    name: 'Train Schedule',
+    icon: 'calendar', 
     component: './trainschedule',
+  },
+  {
+    path: '/station',
+    name: 'Ga',
+    icon: 'environment', 
+    component: './station',
   },
   {
     name: 'result',
