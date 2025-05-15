@@ -69,6 +69,12 @@ export default [
         path: '/trip/manage-trip',
         component: './trip/manage-trip',
       },
+      {
+        name: 'List trip',
+        icon: 'smile',
+        path: '/trip/trip-detail',
+        component: './trip/trip-detail',
+      },
     ],
   },
   {
