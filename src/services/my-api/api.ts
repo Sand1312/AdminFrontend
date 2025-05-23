@@ -52,3 +52,33 @@ export async function currentUser(options?: { [key: string]: any }) {
 
   throw new Error('Failed to fetch user info');
 }
+
+export async function create(body: API.UserCreateParams) {
+  return request<API.UserCreateResult>('/api/user/create', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+  });
+}
+
+export async function sendOtp(body: API.SendOtpParams) {
+  return request<API.SendOtpResult>('/api/send-otp', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+  });
+}
+
+export async function changePassword(body: API.ChangePasswordParams) {
+  return request<API.ChangePasswordResult>('/api/change-password', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+  });
+}

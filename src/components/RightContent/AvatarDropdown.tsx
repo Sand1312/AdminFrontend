@@ -102,14 +102,14 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
     ...(menu
       ? [
           {
-            key: 'center',
+            key: 'create',
             icon: <UserOutlined />,
-            label: '个人中心',
+            label: 'Create User',
           },
           {
-            key: 'settings',
+            key: 'change-password',
             icon: <SettingOutlined />,
-            label: '个人设置',
+            label: 'settings',
           },
           {
             type: 'divider' as const,

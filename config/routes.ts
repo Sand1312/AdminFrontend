@@ -1,4 +1,6 @@
-﻿/**
+﻿import component from '@/locales/bn-BD/component';
+
+/**
  * @name umi 的路由配置
  * @description 只支持 path,component,routes,redirect,wrappers,name,icon 的配置
  * @param path  path 只支持两种占位符配置，第一种是动态参数 :id 的形式，第二种是 * 通配符，通配符只能出现路由字符串的最后。
@@ -64,12 +66,6 @@ export default [
         component: './trip/add-trip',
       },
       {
-        name: 'manage trip',
-        icon: 'smile',
-        path: '/trip/manage-trip',
-        component: './trip/manage-trip',
-      },
-      {
         name: 'List trip',
         icon: 'smile',
         path: '/trip/trip-detail',
@@ -86,13 +82,13 @@ export default [
   {
     path: '/trainschedule',
     name: 'Train Schedule',
-    icon: 'calendar', 
+    icon: 'calendar',
     component: './trainschedule',
   },
   {
     path: '/station',
     name: 'Ga',
-    icon: 'environment', 
+    icon: 'environment',
     component: './station',
   },
   {
@@ -161,6 +157,29 @@ export default [
         icon: 'smile',
         path: '/exception/500',
         component: './exception/500',
+      },
+    ],
+  },
+  {
+    name: 'account',
+    icon: 'user',
+    path: '/account',
+    routes: [
+      {
+        path: '/account',
+        redirect: '/account/create',
+      },
+      {
+        name: 'setting',
+        icon: 'smile',
+        path: '/account/create',
+        component: './account/create',
+      },
+      {
+        name: 'change password',
+        icon: 'smile',
+        path: '/account/change-password',
+        component: './account/change-password',
       },
     ],
   },
