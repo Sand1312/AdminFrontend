@@ -23,4 +23,33 @@ declare namespace API {
     password?: string;
     autoLogin?: boolean;
   };
+
+  type UserCreateParams = {
+    email?: string;
+    username?: string;
+    password?: string;
+  };
+
+  type UserCreateResult = {
+    status?: string;
+  };
+
+  type SendOtpParams = {
+    email?: string;
+  };
+
+  type SendOtpResult = {
+    status?: string;
+  };
+
+  type ChangePasswordParams = {
+    email?: string;
+    currentPassword?: string;
+    newPassword?: string;
+    otp?: string;
+  };
+
+  type ChangePasswordResult = {
+    status?: string;
+  };
 }

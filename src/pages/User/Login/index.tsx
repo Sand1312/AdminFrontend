@@ -168,7 +168,7 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <UserOutlined />,
                 }}
-                placeholder="admin@gmai.com"
+                placeholder="admin@gmail.com"
                 rules={[
                   {
                     required: true,
