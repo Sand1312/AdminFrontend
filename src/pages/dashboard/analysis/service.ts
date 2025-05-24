@@ -75,3 +75,13 @@ export async function getTicketsCountByType(): Promise<{ data: API.TicketsCountB
   // console.log('raw response', res);
   return { data: res };
 }
+export async function getUsersRanking(): Promise<{ data: API.RankingUsers[] }> {
+  const res = await request('api/customers/ticket-summary', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  // console.log('raw response', res);
+  return { data: res };
+}

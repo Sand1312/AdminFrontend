@@ -24,4 +24,11 @@ declare namespace API {
     ticketTypeName: string;
     ticketCount: Int;
   };
+
+  type RankingUsers = {
+    customerId: number;
+    email: string;
+    phone: string;
+    ticketCount: number;
+  };
 }
