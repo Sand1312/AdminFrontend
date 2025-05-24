@@ -10,32 +10,98 @@ import Trend from './Trend';
 
 const TopSearch = ({
   loading,
-  visitData2,
+  // visitData2,
   searchData,
   dropdownGroup,
 }: {
   loading: boolean;
-  visitData2: DataItem[];
+  // visitData2: DataItem[];
   dropdownGroup: React.ReactNode;
   searchData: DataItem[];
 }) => {
   const { styles } = useStyles();
+  // const columns = [
+  //   {
+  //     title: 'Index',
+  //     dataIndex: 'index',
+  //     key: 'index',
+  //   },
+  //   {
+  //     title: 'Keyword',
+  //     dataIndex: 'keyword',
+  //     key: 'keyword',
+  //     render: (text: React.ReactNode) => <a href="/">{text}</a>,
+  //   },
+  //   {
+  //     title: 'Count',
+  //     dataIndex: 'count',
+  //     key: 'count',
+  //     sorter: (
+  //       a: {
+  //         count: number;
+  //       },
+  //       b: {
+  //         count: number;
+  //       },
+  //     ) => a.count - b.count,
+  //   },
+  //   {
+  //     title: 'Range',
+  //     dataIndex: 'range',
+  //     key: 'range',
+  //     sorter: (
+  //       a: {
+  //         range: number;
+  //       },
+  //       b: {
+  //         range: number;
+  //       },
+  //     ) => a.range - b.range,
+  //     render: (
+  //       text: React.ReactNode,
+  //       record: {
+  //         status: number;
+  //       },
+  //     ) => (
+  //       <Trend flag={record.status === 1 ? 'down' : 'up'}>
+  //         <span
+  //           style={{
+  //             marginRight: 4,
+  //           }}
+  //         >
+  //           {text}%
+  //         </span>
+  //       </Trend>
+  //     ),
+  //   },
+  // ];
   const columns = [
     {
-      title: 'Index',
-      dataIndex: 'index',
-      key: 'index',
+      title: 'ID',
+      dataIndex: 'customerId',
+      key: 'customerId',
     },
     {
-      title: 'Keyword',
-      dataIndex: 'keyword',
-      key: 'keyword',
-      render: (text: React.ReactNode) => <a href="/">{text}</a>,
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+      // render: (text: React.ReactNode) => <a href="/">{text}</a>,
     },
     {
-      title: 'Count',
-      dataIndex: 'count',
-      key: 'count',
+      title: 'Name',
+      dataIndex: 'userName',
+      key: 'userName',
+    },
+    {
+      title: 'SDT',
+      dataIndex: 'phone',
+      key: 'phone',
+    },
+    {
+      title: 'Tickets',
+      dataIndex: 'ticketCount',
+      key: 'ticketCount',
+      align: 'center',
       sorter: (
         a: {
           count: number;
@@ -44,35 +110,22 @@ const TopSearch = ({
           count: number;
         },
       ) => a.count - b.count,
-    },
-    {
-      title: 'Range',
-      dataIndex: 'range',
-      key: 'range',
-      sorter: (
-        a: {
-          range: number;
-        },
-        b: {
-          range: number;
-        },
-      ) => a.range - b.range,
-      render: (
-        text: React.ReactNode,
-        record: {
-          status: number;
-        },
-      ) => (
-        <Trend flag={record.status === 1 ? 'down' : 'up'}>
-          <span
-            style={{
-              marginRight: 4,
-            }}
-          >
-            {text}%
-          </span>
-        </Trend>
-      ),
+      //   render: (
+      //     text: React.ReactNode,
+      //     record: {
+      //       status: number;
+      //     },
+      //   ) => (
+      //     <Trend flag={record.status === 1 ? 'down' : 'up'}>
+      //       <span
+      //         style={{
+      //           marginRight: 4,
+      //         }}
+      //       >
+      //         {text}%
+      //       </span>
+      //     </Trend>
+      //   ),
     },
   ];
   return (
@@ -86,18 +139,19 @@ const TopSearch = ({
       }}
     >
       <Row gutter={68}>
-        <Col
+        {/* <Col
           sm={12}
           xs={24}
           style={{
             marginBottom: 24,
           }}
-        >
-          <NumberInfo
+        > */}
+        {/* <NumberInfo
             subTitle={
               <span>
-                搜索用户数
-                <Tooltip title="指标说明">
+                 搜索用户数 
+                Users
+                <Tooltip title="Indicator Description">
                   <InfoCircleOutlined
                     style={{
                       marginLeft: 8,
@@ -110,8 +164,8 @@ const TopSearch = ({
             total={numeral(12321).format('0,0')}
             status="up"
             subTotal={17.1}
-          />
-          <Area
+          /> */}
+        {/* <Area
             xField="x"
             yField="y"
             shapeField="smooth"
@@ -120,20 +174,21 @@ const TopSearch = ({
             padding={-12}
             style={{ fill: 'linear-gradient(-90deg, white 0%, #6294FA 100%)', fillOpacity: 0.4 }}
             data={visitData2}
-          />
-        </Col>
-        <Col
+          /> */}
+        {/* </Col> */}
+        {/* <Col
           sm={12}
           xs={24}
           style={{
             marginBottom: 24,
           }}
-        >
-          <NumberInfo
+        > */}
+        {/* <NumberInfo
             subTitle={
               <span>
                 人均搜索次数
-                <Tooltip title="指标说明">
+                Searches per User
+                <Tooltip title="Indicator Description">
                   <InfoCircleOutlined
                     style={{
                       marginLeft: 8,
@@ -146,8 +201,8 @@ const TopSearch = ({
             status="down"
             subTotal={26.2}
             gap={8}
-          />
-          <Area
+          /> */}
+        {/* <Area
             xField="x"
             yField="y"
             shapeField="smooth"
@@ -156,8 +211,8 @@ const TopSearch = ({
             style={{ fill: 'linear-gradient(-90deg, white 0%, #6294FA 100%)', fillOpacity: 0.4 }}
             data={visitData2}
             axis={false}
-          />
-        </Col>
+          /> */}
+        {/* </Col> */}
       </Row>
       <Table<any>
         rowKey={(record) => record.index}
