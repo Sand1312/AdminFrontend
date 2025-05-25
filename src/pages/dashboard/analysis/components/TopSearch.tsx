@@ -132,7 +132,7 @@ const TopSearch = ({
     <Card
       loading={loading}
       bordered={false}
-      title="线上热门搜索"
+      title="Users Rank"
       extra={dropdownGroup}
       style={{
         height: '100%',
