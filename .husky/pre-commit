@@ -1,1 +1,1 @@
-lint-stagednpm test
+lint-staged

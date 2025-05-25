@@ -112,8 +112,8 @@ const SalesCard = ({
                       <Column
                         height={300}
                         data={salesData}
-                        xField="Days"
-                        yField="Tickets"
+                        xField="date"
+                        yField="totalSales"
                         paddingBottom={12}
                         axis={{
                           x: {
@@ -129,7 +129,7 @@ const SalesCard = ({
                           x: { paddingInner: 0.4 },
                         }}
                         tooltip={{
-                          name: 'Tickets Count',
+                          name: 'Total Sales',
                           channel: 'y',
                         }}
                       />

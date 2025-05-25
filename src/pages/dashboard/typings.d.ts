@@ -4,14 +4,14 @@
 
 declare namespace API {
   type DateRangeParam = {
-    startDate: String;
-    endDate: String;
-    type: String;
+    startDate: string;
+    endDate: string;
+    type: string;
   };
 
   interface VisitDataType {
     date: string;
-    totalAmount: number;
+    totalSales: number;
   }
 
   type RankingRoutes = {

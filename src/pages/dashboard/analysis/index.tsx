@@ -44,6 +44,7 @@ const Analysis: FC<AnalysisProps> = () => {
       refreshDeps: [rangePickerValue],
     },
   );
+  // console.log(salesData);
   const { data: UsersRankingData, loading: UsersRankingLoading } = useRequest(getUsersRanking);
   const { data: ticketData, loading: ticketLoading } = useRequest(getTicketsCountByType);
   const ticketPieData = (ticketData || []).map((item) => ({
@@ -52,7 +53,7 @@ const Analysis: FC<AnalysisProps> = () => {
   }));
   // console.log('pie data', ticketPieData);
   // console.log('start date: ', rangePickerValue[0].format('YYYY-MM-DD'));
-  console.log('end date: ', rangePickerValue[1].format('YYYY-MM-DD'));
+  // console.log('end date: ', rangePickerValue[1].format('YYYY-MM-DD'));
   const selectDate = (type: TimeType) => {
     setRangePickerValue(getTimeDistance(type));
   };

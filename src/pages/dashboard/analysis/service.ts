@@ -50,6 +50,7 @@ export async function getSalesFromTo(
     },
     data: body,
   });
+  console.log('raw response', res);
   return { data: res };
 }
 
