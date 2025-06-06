@@ -187,9 +187,9 @@ const StationManager: React.FC = () => {
           <Button type="primary" size="small" onClick={() => handleEdit(record)} style={{ backgroundColor: '#52c41a' }}>
             Sửa
           </Button>
-          <Button danger size="small" onClick={() => handleDelete(record)}>
+          {/* <Button danger size="small" onClick={() => handleDelete(record)}>
             Xóa
-          </Button>
+          </Button> */}
         </div>
       ),
     },

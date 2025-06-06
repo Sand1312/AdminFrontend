@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Spin, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { fetchTrips, fetchTripById } from '@/services/my-api/tripApi';
+import { fetchTrips, fetchTripById,cancelTripById } from '@/services/my-api/tripApi';
 import type { Trip } from '@/pages/trip/trip-detail/data.d';
 
 const TripManager: React.FC = () => {
@@ -52,6 +52,16 @@ const TripManager: React.FC = () => {
     setCarriageSeatsVisible(true);
   };
 
+  const handleOnclick = (tripId: number) => {
+    cancelTripById(tripId).then((data) => {
+       message.success(data.message)
+      console.log(data);
+      loadTrips();
+    }
+    )
+  }
+  
+
   const columns: ColumnsType<Trip> = [
     {
       title: 'Mã chuyến',
@@ -72,7 +82,7 @@ const TripManager: React.FC = () => {
       align: 'center',
     },
     {
-      title: 'Giá',
+      title: 'Giá vé cơ bản',
       dataIndex: 'basePrice',
       key: 'basePrice',
       align: 'center',
@@ -117,9 +127,8 @@ const TripManager: React.FC = () => {
                 <Button
                 type="link"
                 danger
-                onClick={() => {
-                    console.log('Hủy chuyến', record.tripId);
-                }}
+                onClick={() => handleOnclick(record.tripId)}
+                disabled={record.tripStatus === 'Cancelled' }
                 >
                 Hủy
                 </Button>

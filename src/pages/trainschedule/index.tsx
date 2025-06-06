@@ -6,6 +6,8 @@ import { fetchTrainSchedules, deleteTrainSchedule, createTrainSchedule, updateTr
 import type { TrainSchedule } from '@/pages/trainschedule/data.d';
 import { FilterDropdownProps } from 'antd/es/table/interface';
 import { ColumnType } from 'antd/es/table';
+import type { Station } from '@/pages/station/data.d';
+import { fetchStations } from '@/services/my-api/trainscheduleApi';
 
 const TrainScheduleManager: React.FC = () => {
   const [trainSchedules, setTrainSchedules] = useState<TrainSchedule[]>([]);
@@ -19,9 +21,13 @@ const TrainScheduleManager: React.FC = () => {
   const [selectedRouteName, setSelectedRouteName] = useState('');
   const [selectedStationName, setSelectedStationName] = useState('');
   const [selectedDay, setSelectedDay] = useState('');
+  const [stations, setStations] = useState<Station[]>([]);
 
   useEffect(() => {
     loadData();
+    fetchStations()
+      .then((res) => setStations(res))
+      .catch((err) => message.error('Không thể tải danh sách ga: ' + err.message));
   }, []);
 
   const loadData = () => {
@@ -124,8 +130,8 @@ const TrainScheduleManager: React.FC = () => {
       }
 
       const distanceValue = Number(values.distance);
-      if (isNaN(distanceValue) || distanceValue <= 0) {
-        message.error('Khoảng cách phải là số dương!');
+      if (isNaN(distanceValue) || distanceValue < 0) {
+        message.error('Khoảng cách không được là số âm!');
         return;
       }
 
@@ -172,7 +178,7 @@ const TrainScheduleManager: React.FC = () => {
 
   const trainNames = [...new Set(trainSchedules.map((s) => s.train.trainName))];
   const routeNames = [...new Set(trainSchedules.map((s) => s.train.route.routeName))];
-  const stationNames = [...new Set(trainSchedules.map((s) => s.station.stationName))];
+  const stationNames = stations.map((s) => s.stationName);
   const dayList = [...new Set(trainSchedules.map((s) => s.day))];
 
   const columns: ColumnType<TrainSchedule>[] = [
@@ -309,9 +315,9 @@ const TrainScheduleManager: React.FC = () => {
           <Button type="primary" onClick={() => handleEdit(record)} style={{ backgroundColor: '#52c41a' }}>
             Sửa
           </Button>
-          <Button danger onClick={() => handleDelete(record)}>
+          {/* <Button danger onClick={() => handleDelete(record)}>
             Xóa
-          </Button>
+          </Button> */}
         </div>
       ),
     },
