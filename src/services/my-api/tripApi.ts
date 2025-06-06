@@ -30,3 +30,9 @@ export async function fetchTripById(id: number) {
   console.log('fetchTripById response:', data);
   return data;
 }
+
+export async function cancelTripById(tripId: number) {
+  const data = await request<any>(`/api/trips/cancelTrip/${tripId}`, { method: 'GET' });
+  // console.log('fetchTripById response:', data);
+  return data;
+}

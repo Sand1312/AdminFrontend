@@ -1,6 +1,12 @@
 import { request } from 'umi';
 import type { TrainSchedule } from '@/pages/trainschedule/data.d';
+import type { Station } from '@/pages/station/data.d';
 
+export async function fetchStations() {
+  return request<Station[]>('/api/station/all', {
+    method: 'GET',
+  });
+}
 // Lấy danh sách lịch tàu
 export async function fetchTrainSchedules() {
   return request<TrainSchedule[]>('/api/train-schedules', {
