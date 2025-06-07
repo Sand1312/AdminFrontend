@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Spin, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { fetchTrips, fetchTripById,cancelTripById } from '@/services/my-api/tripApi';
+import { fetchTrips, fetchTripById, cancelTripById } from '@/services/my-api/tripApi';
 import type { Trip } from '@/pages/trip/trip-detail/data.d';
 
 const TripManager: React.FC = () => {
@@ -10,11 +10,9 @@ const TripManager: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
-
   const [carriageSeatsVisible, setCarriageSeatsVisible] = useState(false);
   const [selectedCarriageSeats, setSelectedCarriageSeats] = useState<any[]>([]);
   const [selectedCarriageName, setSelectedCarriageName] = useState<string>('');
-
   const [expandedSchedule, setExpandedSchedule] = useState(false);
 
   useEffect(() => {
@@ -52,15 +50,27 @@ const TripManager: React.FC = () => {
     setCarriageSeatsVisible(true);
   };
 
-  const handleOnclick = (tripId: number) => {
-    cancelTripById(tripId).then((data) => {
-       message.success(data.message)
-      console.log(data);
-      loadTrips();
-    }
-    )
-  }
-  
+  const handleCancelTrip = (tripId: number) => {
+    Modal.confirm({
+      title: 'Xác nhận hủy chuyến đi',
+      content: 'Bạn có chắc chắn muốn hủy chuyến đi này?',
+      okText: 'Hủy chuyến',
+      cancelText: 'Không',
+      onOk: async () => {
+        try {
+          const res = await cancelTripById(tripId);
+          message.success(res.message || 'Đã hủy chuyến thành công');
+          setTrips((prev) =>
+            prev.map((trip) =>
+              trip.tripId === tripId ? { ...trip, tripStatus: 'Cancelled' } : trip,
+            ),
+          );
+        } catch (err: any) {
+          message.error(err.message || 'Hủy chuyến thất bại');
+        }
+      },
+    });
+  };
 
   const columns: ColumnsType<Trip> = [
     {
@@ -99,53 +109,48 @@ const TripManager: React.FC = () => {
       align: 'center',
     },
     {
-        title: 'Hành động',
-        key: 'actions',
-        align: 'center',
-        render: (_: any, record: Trip) => (
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 12 }}>
-            <div
-                style={{
-                border: '1px solid #d9d9d9',
-                borderRadius: 6,
-                padding: '6px 12px',
-                backgroundColor: '#fafafa',
-                }}
+      title: 'Hành động',
+      key: 'actions',
+      align: 'center',
+      render: (_: any, record: Trip) => (
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 12 }}>
+          <div
+            style={{
+              border: '1px solid #d9d9d9',
+              borderRadius: 6,
+              padding: '6px 12px',
+              backgroundColor: '#fafafa',
+            }}
+          >
+            <Button type="link" onClick={() => openDetailModal(record.tripId)}>
+              Xem chi tiết
+            </Button>
+          </div>
+          <div
+            style={{
+              border: '1px solid #d9d9d9',
+              borderRadius: 6,
+              padding: '6px 12px',
+              backgroundColor: '#fff1f0',
+            }}
+          >
+            <Button
+              type="link"
+              danger
+              onClick={() => handleCancelTrip(record.tripId)}
+              disabled={record.tripStatus === 'Cancelled'}
             >
-                <Button type="link" onClick={() => openDetailModal(record.tripId)}>
-                Xem chi tiết
-                </Button>
-            </div>
-            <div
-                style={{
-                border: '1px solid #d9d9d9',
-                borderRadius: 6,
-                padding: '6px 12px',
-                backgroundColor: '#fff1f0',
-                }}
-            >
-                <Button
-                type="link"
-                danger
-                onClick={() => handleOnclick(record.tripId)}
-                disabled={record.tripStatus === 'Cancelled' }
-                >
-                Hủy
-                </Button>
-            </div>
-            </div>
-        ),
-    }
+              Hủy
+            </Button>
+          </div>
+        </div>
+      ),
+    },
   ];
 
-  const RenderSchedule = ({
-    schedules,
-  }: {
-    schedules: Trip['train']['trainSchedules'];
-  }) => {
+  const RenderSchedule = ({ schedules }: { schedules: Trip['train']['trainSchedules'] }) => {
     const headCount = 2;
     const tailCount = 2;
-
     let displayData;
 
     if (expandedSchedule || schedules.length <= headCount + tailCount + 1) {
@@ -172,7 +177,7 @@ const TripManager: React.FC = () => {
           arrivalTime: '...',
           departureTime: '...',
         },
-        ...schedules.slice(schedules.length - tailCount).map((schedule, index) => ({
+        ...schedules.slice(-tailCount).map((schedule, index) => ({
           key: schedule.trainScheduleId,
           stt: schedules.length - tailCount + index + 1,
           ga: schedule.station.stationName,
@@ -217,7 +222,6 @@ const TripManager: React.FC = () => {
               key: 'arrivalTime',
               width: 100,
               align: 'center',
-              render: (text) => (text === '---' ? '---' : text),
             },
             {
               title: 'Giờ đi',
@@ -225,7 +229,6 @@ const TripManager: React.FC = () => {
               key: 'departureTime',
               width: 100,
               align: 'center',
-              render: (text) => (text === '---' ? '---' : text),
             },
           ]}
           rowClassName={(record) => (record.key === 'ellipsis' ? 'ellipsis-row' : '')}
@@ -250,7 +253,6 @@ const TripManager: React.FC = () => {
           marginBottom: 24,
           textAlign: 'center',
           color: '#1890ff',
-          userSelect: 'none',
         }}
       >
         Quản lý chuyến đi
@@ -287,7 +289,7 @@ const TripManager: React.FC = () => {
         title={null}
       >
         <h2 style={{ textAlign: 'center', marginBottom: 24, fontWeight: '700', fontSize: 24 }}>
-            Chi tiết chuyến đi
+          Chi tiết chuyến đi
         </h2>
         {detailLoading || !selectedTrip ? (
           <div style={{ display: 'flex', justifyContent: 'center', padding: 40 }}>
@@ -310,9 +312,8 @@ const TripManager: React.FC = () => {
               <p>
                 <strong>Ga kết thúc:</strong>{' '}
                 {
-                  selectedTrip.train.trainSchedules[
-                    selectedTrip.train.trainSchedules.length - 1
-                  ]?.station.stationName
+                  selectedTrip.train.trainSchedules[selectedTrip.train.trainSchedules.length - 1]
+                    ?.station.stationName
                 }
               </p>
             </div>
@@ -329,8 +330,7 @@ const TripManager: React.FC = () => {
                   stt: idx + 1,
                   compartmentName: carriage.compartment.compartmentName,
                   seatCount: carriage.compartment.seatCount,
-                  bookedCount:
-                    carriage.seats?.filter((s) => s.seatStatus === 'Booked').length || 0,
+                  bookedCount: carriage.seats?.filter((s) => s.seatStatus === 'Booked').length || 0,
                   carriage,
                 })) || []
               }
