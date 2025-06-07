@@ -34,6 +34,12 @@ declare namespace API {
     status?: string;
   };
 
+  type User = {
+    userId?: number;
+    email?: string;
+    username?: string;
+    password?: string;
+  };
   type SendOtpParams = {
     email?: string;
   };

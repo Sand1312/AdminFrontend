@@ -1,7 +1,7 @@
 import { EllipsisOutlined } from '@ant-design/icons';
 import { GridContent } from '@ant-design/pro-components';
 import { useRequest } from '@umijs/max';
-import { Col, Dropdown, Row } from 'antd';
+import { Col, Dropdown, Row, Table, TableProps } from 'antd';
 import type { RangePickerProps } from 'antd/es/date-picker/generatePicker';
 import type { RadioChangeEvent } from 'antd/es/radio';
 import type dayjs from 'dayjs';
@@ -18,12 +18,62 @@ import type { AnalysisData } from './data.d';
 // import { fakeChartData  } from './service';
 import useStyles from './style.style';
 import { getTimeDistance } from './utils/utils';
-import { getSalesFromTo, getUsersRanking, getTicketsCountByType } from './service';
+import { getSalesFromTo, getUsersRanking, getTicketsCountByType, getAllTickets } from './service';
 type RangePickerValue = RangePickerProps<dayjs.Dayjs>['value'];
 type AnalysisProps = {
-  dashboardAndanalysis: AnalysisData;
+  dashboardAnalysis: AnalysisData;
   loading: boolean;
 };
+
+const columns: TableProps<API.TicketType>['columns'] = [
+  {
+    title: 'ID',
+    dataIndex: 'ticketId',
+    key: 'ticketId',
+    render: (text) => <a>{text}</a>,
+  },
+  {
+    title: 'Trip ID',
+    dataIndex: 'tripId',
+    key: 'tripId',
+  },
+  {
+    title: 'Departure Station',
+    dataIndex: 'departureStation',
+    key: 'departureStation',
+  },
+  {
+    title: 'Arrival Station',
+    dataIndex: 'arrivalStation',
+    key: 'arrivalStation',
+  },
+  {
+    title: 'Seat ID',
+    dataIndex: 'seatId',
+    key: 'seatId',
+  },
+  {
+    title: 'Train Name',
+    dataIndex: 'trainName',
+    key: 'trainName',
+  },
+  {
+    title: 'Route Name',
+    dataIndex: 'routeName',
+    key: 'routeName',
+  },
+  // {
+  //   title: 'Action',
+  //   key: 'action',
+  //   render: () => (
+  //     <span>
+  //       <a>View</a>
+  //       <a style={{ marginLeft: 8 }}>Edit</a>
+  //     </span>
+  //   ),
+  // },
+];
+
 // type SalesType = 'all' | 'online' | 'stores';
 const Analysis: FC<AnalysisProps> = () => {
   const { styles } = useStyles();
@@ -45,6 +95,7 @@ const Analysis: FC<AnalysisProps> = () => {
     },
   );
   // console.log(salesData);
+  const { data: TicketsData, loading: TicketsLoading } = useRequest(getAllTickets);
   const { data: UsersRankingData, loading: UsersRankingLoading } = useRequest(getUsersRanking);
   const { data: ticketData, loading: ticketLoading } = useRequest(getTicketsCountByType);
   const ticketPieData = (ticketData || []).map((item) => ({
@@ -177,6 +228,17 @@ const Analysis: FC<AnalysisProps> = () => {
             handleTabChange={handleTabChange}
           />
         </Suspense> */}
+        <Row style={{ marginTop: 24 }}>
+          <Col span={24}>
+            <Suspense fallback={null}>
+              <Table<API.TicketType>
+                columns={columns}
+                dataSource={TicketsData}
+                loading={TicketsLoading}
+              />
+            </Suspense>
+          </Col>
+        </Row>
       </>
     </GridContent>
   );
