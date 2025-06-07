@@ -86,3 +86,14 @@ export async function getUsersRanking(): Promise<{ data: API.RankingUsers[] }> {
   // console.log('raw response', res);
   return { data: res };
 }
+
+export async function getAllTickets(): Promise<{ data: API.TicketType[] }> {
+  const res = await request('api/tickets', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  // console.log('raw response', res);
+  return { data: res };
+}

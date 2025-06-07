@@ -53,21 +53,19 @@ export default [
   {
     path: '/trip',
     name: 'trip',
-    icon: 'smile',
+    icon: 'car',
     routes: [
       {
         path: '/trip',
         redirect: '/trip/manage-trip',
       },
       {
-        name: 'add trip',
-        icon: 'smile',
+        name: 'Add trip',
         path: '/trip/add-trip',
         component: './trip/add-trip',
       },
       {
         name: 'List trip',
-        icon: 'smile',
         path: '/trip/trip-detail',
         component: './trip/trip-detail',
       },
@@ -76,7 +74,7 @@ export default [
   {
     path: '/train',
     name: 'train',
-    icon: 'smile',
+    icon: 'team',
     component: './train',
   },
   {
@@ -91,75 +89,75 @@ export default [
     icon: 'environment',
     component: './station',
   },
-  {
-    name: 'result',
-    icon: 'CheckCircleOutlined',
-    path: '/result',
-    routes: [
-      {
-        path: '/result',
-        redirect: '/result/success',
-      },
-      {
-        name: 'success',
-        icon: 'smile',
-        path: '/result/success',
-        component: './result/success',
-      },
-      {
-        name: 'fail',
-        icon: 'smile',
-        path: '/result/fail',
-        component: './result/fail',
-      },
-    ],
-  },
-  {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    access: 'canAdmin',
-    routes: [
-      {
-        path: '/admin',
-        redirect: '/admin/sub-page',
-      },
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        component: './Admin',
-      },
-    ],
-  },
-  {
-    name: 'exception',
-    icon: 'warning',
-    path: '/exception',
-    routes: [
-      {
-        path: '/exception',
-        redirect: '/exception/403',
-      },
-      {
-        name: '403',
-        icon: 'smile',
-        path: '/exception/403',
-        component: './exception/403',
-      },
-      {
-        name: '404',
-        icon: 'smile',
-        path: '/exception/404',
-        component: './exception/404',
-      },
-      {
-        name: '500',
-        icon: 'smile',
-        path: '/exception/500',
-        component: './exception/500',
-      },
-    ],
-  },
+  // {
+  //   name: 'result',
+  //   icon: 'CheckCircleOutlined',
+  //   path: '/result',
+  //   routes: [
+  //     {
+  //       path: '/result',
+  //       redirect: '/result/success',
+  //     },
+  //     {
+  //       name: 'success',
+  //       icon: 'smile',
+  //       path: '/result/success',
+  //       component: './result/success',
+  //     },
+  //     {
+  //       name: 'fail',
+  //       icon: 'smile',
+  //       path: '/result/fail',
+  //       component: './result/fail',
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: '/admin',
+  //   name: 'admin',
+  //   icon: 'crown',
+  //   access: 'canAdmin',
+  //   routes: [
+  //     {
+  //       path: '/admin',
+  //       redirect: '/admin/sub-page',
+  //     },
+  //     {
+  //       path: '/admin/sub-page',
+  //       name: 'sub-page',
+  //       component: './Admin',
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'exception',
+  //   icon: 'warning',
+  //   path: '/exception',
+  //   routes: [
+  //     {
+  //       path: '/exception',
+  //       redirect: '/exception/403',
+  //     },
+  //     {
+  //       name: '403',
+  //       icon: 'smile',
+  //       path: '/exception/403',
+  //       component: './exception/403',
+  //     },
+  //     {
+  //       name: '404',
+  //       icon: 'smile',
+  //       path: '/exception/404',
+  //       component: './exception/404',
+  //     },
+  //     {
+  //       name: '500',
+  //       icon: 'smile',
+  //       path: '/exception/500',
+  //       component: './exception/500',
+  //     },
+  //   ],
+  // },
   {
     name: 'account',
     icon: 'user',

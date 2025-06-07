@@ -31,4 +31,14 @@ declare namespace API {
     phone: string;
     ticketCount: number;
   };
+
+  interface TicketType {
+    ticketId: number;
+    tripId: number;
+    departureStation: string;
+    arrivalStation: string;
+    seatId: number;
+    trainName: string;
+    routeName: string;
+  }
 }
